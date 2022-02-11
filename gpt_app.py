@@ -1,7 +1,6 @@
 import streamlit as st
 import create_tool
 import text_gen
-from gsheetsdb import connect
 import pandas as pd
 from functions import *
 from googl_sheet import *
