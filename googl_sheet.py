@@ -12,7 +12,7 @@ creds = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"],
     scopes=SCOPES)
 
-SPREADSHEET_ID = st.secret['sheet_id']
+SPREADSHEET_ID = st.secrets['sheet_id']
 
 service = build('sheets', 'v4', credentials=creds)
 
