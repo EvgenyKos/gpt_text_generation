@@ -1,47 +1,51 @@
-from webbrowser import get
 import streamlit as st
 import create_tool
 import text_gen
 from gsheetsdb import connect
 import pandas as pd
-
-public_gsheets_url = "https://docs.google.com/spreadsheets/d/15bkGywUo6ru8Fczi03_0XufLw-_rfG7SM-j6WjiiGvM/edit#gid=0"
-
-# Create a connection object.
-conn = connect()
-
-# Perform SQL query on the Google Sheet.
-# Uses st.cache to only rerun when the query changes or after 10 min.
-#@st.cache(ttl=600)
-def run_query(query):
-    rows = conn.execute(query, headers=1)
-    return rows
-
-#sheet_url = st.secrets["public_gsheets_url"]
-rows = run_query(f'SELECT * FROM "{public_gsheets_url}"')
+from functions import *
+from googl_sheet import *
 
 @st.cache
-def get_dictionary(rows):
-    df = pd.DataFrame(rows)
+def get_dictionary(values):
+    df = pd.DataFrame(values)
+    df.columns = df.iloc[0]
+    df = df.drop(df.index[0])
     tools = {}
     for index, row in df.iterrows():
-        tools[row['tool']] = [row['prompt'], row['upvote']]
+        tools[row['tool']] = [row['prompt'], row['upvote'], index]
     return tools
 
-tools = get_dictionary(rows)
+def create_state():
+    st.session_state.create=True
 
-st.sidebar.title("Tools")
+def change_tool():
+    st.session_state.create=False
 
-df = pd.DataFrame(rows)
+if 'create' not in st.session_state:
+    st.session_state.create=False
+
+values = read_db()
+tools = get_dictionary(values)
 
 
-option = st.sidebar.radio("", tools.keys())
+#Sort bases on upvote
+tools = dict(sorted(tools.items(), key=lambda item: item[1][1], reverse=True))
 
+api_key = st.sidebar.text_input("OpenAI API Key:", type="password")
+st.sidebar.markdown("No text will be generated without OpenAI key")
 
-if st.sidebar.button("Create tool"):
-    create_tool.app()
+but_tool = st.sidebar.empty()
+
+st.sidebar.markdown("## Select tool")
+option = st.sidebar.radio("", tools.keys(), on_change=change_tool)
+
+but_tool.button("Create tool", on_click=create_state)
+
+if st.session_state.create:
+    create_tool.app(api_key)
 else:
 
     tool = tools[option]
 
-    text_gen.app(option, tool[0], tool[1])
+    text_gen.app(option, tool[0], tool[1], tool[2], api_key)
