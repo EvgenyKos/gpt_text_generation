@@ -17,7 +17,7 @@ def app(key):
 
     if form.form_submit_button("Generate text"):
         with st.spinner("Generating text..."):
-            resp = gpt_3(prompt, 0.5, "text-ada-001")
+            resp = gpt_3(prompt, 0.7, "text-davinci-001")
             st.session_state.g_text = resp['choices'][0]['text']
             st.markdown(resp['choices'][0]['text'])
 
