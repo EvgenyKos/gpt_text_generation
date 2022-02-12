@@ -31,7 +31,7 @@ tools = get_dictionary(values)
 #Sort bases on upvote
 tools = dict(sorted(tools.items(), key=lambda item: item[1][1], reverse=True))
 
-api_key = st.sidebar.text_input("OpenAI API Key:", type="password")
+api_key = st.sidebar.text_input("OpenAI API Key:", type="password", help="Get your API key from https://openai.com/api")
 st.sidebar.markdown("No text will be generated without OpenAI key")
 
 but_tool = st.sidebar.empty()
