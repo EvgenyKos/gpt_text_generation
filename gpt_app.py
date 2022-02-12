@@ -5,6 +5,11 @@ import pandas as pd
 from functions import *
 from googl_sheet import *
 
+st.set_page_config(
+    page_title="Creative writing tool",
+    page_icon="🖊️",
+    layout="centered")
+
 @st.cache
 def get_dictionary(values):
     df = pd.DataFrame(values)
