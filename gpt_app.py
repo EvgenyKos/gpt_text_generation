@@ -53,6 +53,6 @@ else:
 
     tool = tools[option]
     if option=="YC":
-        YC_apl.app(api_key)
+        YC_apl.app(tool[1], tool[2], api_key)
     else:
         text_gen.app(option, tool[0], tool[1], tool[2], api_key)

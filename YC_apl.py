@@ -5,7 +5,7 @@ from functions import *
 from googl_sheet import *
 
 
-def app(key):
+def app(upvote, index, key):
 
     base_prompt = """
     Input: Write the answer for the following Y Combinator application question for my startup OpenPhone that is a phone system equipped with CRM capabilities, built from the ground up to fit the needs of small businesses.
@@ -61,3 +61,8 @@ def app(key):
                 st.markdown(f"Option {i+1}:")
                 st.info(resp['choices'][0]['text'])
                 st.write(f"Reponse length (in characters): {len(resp['choices'][0]['text'])}")
+    st.metric(label='', value=int(upvote), delta = 'upvotes')
+    place_but = st.empty()
+    if place_but.button("+1", on_click=lambda: upvote_gs(upvote, index)):
+        if place_but.button("-1", on_click=lambda: devote_gs(upvote, index)):
+            pass
