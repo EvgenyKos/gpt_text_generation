@@ -14,12 +14,12 @@ def gpt_j(prompt, temp):
     return resp
 
 
-def gpt_3(prompt, temper, engine):
+def gpt_3(prompt, temper, engine, lengh):
     response = openai.Completion.create(
     engine=engine,
     prompt=prompt,
     temperature=temper,
-    max_tokens=1800,
+    max_tokens=lengh,
     top_p=1,
     frequency_penalty=0,
     presence_penalty=0,

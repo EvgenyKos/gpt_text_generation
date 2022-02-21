@@ -24,7 +24,7 @@ def read_db():
     values_input = result_input.get('values', [])
     return values_input
 
-def write_df(value_input):
+def write_df(value_input, sheet):
     result = sheet.values().append(
             spreadsheetId=SPREADSHEET_ID, range='Tools!A1:C1',
             valueInputOption='USER_ENTERED',

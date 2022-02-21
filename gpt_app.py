@@ -1,6 +1,7 @@
 import streamlit as st
 import create_tool
 import text_gen
+import YC_apl
 import pandas as pd
 from functions import *
 from googl_sheet import *
@@ -51,5 +52,7 @@ if st.session_state.create:
 else:
 
     tool = tools[option]
-
-    text_gen.app(option, tool[0], tool[1], tool[2], api_key)
+    if option=="YC":
+        YC_apl.app(api_key)
+    else:
+        text_gen.app(option, tool[0], tool[1], tool[2], api_key)
